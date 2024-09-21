@@ -48,17 +48,17 @@ function App() {
         return;
       }
 
-      const { title, date, action } = result.popupDetails;
+      const { title, date } = result.popupDetails;
 
       if(popups[title]){
         const popupDate = new Date(date);
         const currentDate = new Date();
 
         const latestPopupIndex = popupKeys.indexOf(title);
-        //if last popup opened before three days we show the next popup
-        if( action === "opened" && ((currentDate - popupDate)/(1000*3600*24)) > 3 ){
+        //if last popup shown before three days we show the next popup
+        if( ((currentDate - popupDate)/(1000*3600*24)) > 3 ){
 
-          if(latestPopupIndex < popupKeys.length + 1){
+          if(latestPopupIndex + 1 < popupKeys.length){
             setPopup( popups[popupKeys[latestPopupIndex+1]] );
             setPopupKey(popupKeys[latestPopupIndex + 1]);
             setIsShown(true);
@@ -66,11 +66,6 @@ function App() {
           else{
             //no popup shown
           }
-        }
-        else if( action === "closed" && ((currentDate - popupDate)/(1000*3600*24)) > 3){
-          setPopup( popups[popupKeys[latestPopupIndex]] );
-          setPopupKey(popupKeys[latestPopupIndex]);
-          setIsShown(true);
         }
         else{
           //no popup shown
